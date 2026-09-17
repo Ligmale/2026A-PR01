@@ -1,14 +1,19 @@
+#!./venv/bin/python
 # ======================== main.py ========================
-
-import pygame
 import sys
+import pygame
+
 from config import FPS, doodle_dict
-from window import draw_window, show_game_over_message, generate_initial_platforms
 from game import (
-    apply_gravity, move_doodle, move_platforms,
-    check_platform_collisions, scroll_camera,
-    check_game_over, restart_game
+    apply_gravity,
+    check_game_over,
+    check_platform_collisions,
+    move_doodle,
+    move_platforms,
+    restart_game,
+    scroll_camera,
 )
+from window import draw_window, generate_initial_platforms, show_game_over_message
 
 # Initialisation de Pygame et de l'horloge
 pygame.init()

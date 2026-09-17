@@ -3,10 +3,23 @@
 import pygame
 import random
 from config import (
-    SCREEN_WIDTH, SCREEN_HEIGHT, GRAVITY, JUMP_VELOCITY, SPRING_JUMP_VELOCITY,
-    DOODLE_SPEED, DOODLE_WIDTH, DOODLE_HEIGHT, PLATFORM_WIDTH,
-    MIN_PLATFORM_GAP, MAX_PLATFORM_GAP, CAMERA_SCROLL_THRESHOLD,
-    PLATFORMS, doodle_dict, DOODLE_START_X, DOODLE_START_Y, LIVES
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    GRAVITY,
+    JUMP_VELOCITY,
+    SPRING_JUMP_VELOCITY,
+    DOODLE_SPEED,
+    DOODLE_WIDTH,
+    DOODLE_HEIGHT,
+    PLATFORM_WIDTH,
+    MIN_PLATFORM_GAP,
+    MAX_PLATFORM_GAP,
+    CAMERA_SCROLL_THRESHOLD,
+    PLATFORMS,
+    doodle_dict,
+    DOODLE_START_X,
+    DOODLE_START_Y,
+    LIVES,
 )
 from platforms import create_platform, choose_platform_type
 from doodle import doodle_left_img, doodle_right_img
@@ -23,6 +36,7 @@ def apply_gravity():
     # du Doodle à partir de GRAVITY.
 
     return
+
 
 # ===========================================================
 
@@ -48,14 +62,15 @@ def move_doodle():
         doodle_dict["direction"] = "right"
         doodle_dict["image"] = doodle_right_img
 
-
     # TODO : Implémentez le Screen Wrap pour qu'une partie du Doodle puisse
     # sortir d'un côté avant de réapparaître de l'autre.
     # N'utilisez pas de dimensions numériques écrites directement.
-
-
-
+    if doodle_dict["x"] > (SCREEN_WIDTH - DOODLE_WIDTH):
+        doodle_dict["x"] = 0
+    if doodle_dict["x"] < (0):
+        doodle_dict["x"] = SCREEN_WIDTH - DOODLE_WIDTH
     return
+
 
 # ===========================================================
 
@@ -71,6 +86,7 @@ def move_platforms():
     # leur vitesse lorsqu'elles atteignent un bord.
 
     return
+
 
 # ===========================================================
 
@@ -98,6 +114,7 @@ def check_platform_collisions():
 
     return
 
+
 # ===========================================================
 
 
@@ -117,6 +134,7 @@ def scroll_camera():
 
     return
 
+
 # ===========================================================
 
 
@@ -134,6 +152,7 @@ def generate_new_platforms():
     # choose_platform_type(...) avec les probabilités indiquées dans le README.
 
     return
+
 
 # ===========================================================
 
@@ -171,6 +190,8 @@ def rects_collide(r1, r2):
     Cette fonction est fournie et ne doit pas être modifiée.
     """
     return not (
-        r1[0] + r1[2] <= r2[0] or r1[0] >= r2[0] + r2[2] or
-        r1[1] + r1[3] <= r2[1] or r1[1] >= r2[1] + r2[3]
+        r1[0] + r1[2] <= r2[0]
+        or r1[0] >= r2[0] + r2[2]
+        or r1[1] + r1[3] <= r2[1]
+        or r1[1] >= r2[1] + r2[3]
     )
