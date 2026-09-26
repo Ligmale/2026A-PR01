@@ -80,7 +80,6 @@ def choose_platform_type(green_probability, blue_probability, spring_probability
     verte, bleue et à ressort. La probabilité restante correspond à une
     plateforme marron.
     """
-
     #FINI
     # TODO : Utilisez random.random() et les probabilités reçues en paramètres
     # pour retourner l'une des chaînes suivantes :

@@ -1,6 +1,7 @@
 # ======================== window.py ========================
 
 import os
+from tkinter.ttk import Separator
 import pygame
 import random
 from config import (
@@ -45,7 +46,14 @@ def generate_initial_platforms():
     # horizontale valide, choisir un type avec choose_platform_type(...),
     # ajouter la plateforme à PLATFORMS et calculer la hauteur de la suivante.
     # Les probabilités à utiliser sont données dans le README.
-
+    green_probability = random.random()
+    blue_probability = (1-green_probability)*random.random()
+    spring_probability = (1-green_probability-blue_probability)*random.random()
+    print(green_probability,blue_probability,spring_probability, green_probability + blue_probability + spring_probability,sep="\n")
+    color = choose_platform_type(g,1,1)
+    while current_y < SCREEN_HEIGHT:
+        new_platform = create_platform(random.randint(0, SCREEN_WIDTH), current_y+random.randint(MIN_PLATFORM_GAP,MAX_PLATFORM_GAP),platform_type=color)
+        pass
     return
     # ===========================================================
 
@@ -95,3 +103,6 @@ def show_game_over_message():
     GAME_WINDOW.blit(hint_text, hint_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 95)))
 
     pygame.display.update()
+
+if __name__ == "__main__":
+    generate_initial_platforms()
