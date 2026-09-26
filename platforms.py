@@ -37,17 +37,26 @@ def create_platform(x, y, platform_type="green"):
     représente aussi correctement les plateformes bleues, marron et à ressort.
     """
 
+    #Vitesse en x de la plateforme
+    vx = MOVING_PLATFORM_SPEED if platform_type == "blue" else 0.0
+
+    #10 pixels de plus en hauteur si c'est un ressort
+    height = PLATFORM_SIZE[1]
+    if platform_type == "spring":
+        height += 10
+
     platform = {
         "x": float(x),
         "y": float(y),
-        "type": "green",                    # TODO
-        "image": platform_images["green"],  # TODO
-        "vx": 0.0,                          # TODO
+        "type": platform_type,                    
+        "image": platform_images[platform_type],  
+        "vx": vx,                          
         "active": True,
         "width": PLATFORM_SIZE[0],
-        "height": PLATFORM_SIZE[1]           # TODO
+        "height": height           
     }
 
+    #FINI
     # TODO : Modifiez le dictionnaire ci-dessus pour qu'il dépende réellement
     # de l'argument platform_type.
     #
@@ -72,6 +81,7 @@ def choose_platform_type(green_probability, blue_probability, spring_probability
     plateforme marron.
     """
 
+    #FINI
     # TODO : Utilisez random.random() et les probabilités reçues en paramètres
     # pour retourner l'une des chaînes suivantes :
     # "green", "blue", "spring" ou "brown".
@@ -79,7 +89,21 @@ def choose_platform_type(green_probability, blue_probability, spring_probability
     # Attention : les seuils utilisés avec random.random() doivent être
     # cumulatifs.
 
-    return "green"  # Valeur temporaire à remplacer
+    r = random.random()
+
+    #Seuils accumulés et calculés à partir des paramètres
+    seuil_vert = green_probability
+    seuil_bleu = seuil_vert + blue_probability
+    seuil_ressort = seuil_bleu + spring_probability
+
+    if r < seuil_vert:
+        return "green"
+    elif r < seuil_bleu:
+        return "blue"
+    elif r < seuil_ressort:
+        return "spring"
+    else:
+        return "brown"
 
 # ===========================================================
 
