@@ -1,7 +1,6 @@
 # ======================== window.py ========================
 
 import os
-from tkinter.ttk import Separator
 import pygame
 import random
 from config import (
