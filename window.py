@@ -38,22 +38,14 @@ def generate_initial_platforms():
 
     current_y = DOODLE_START_Y + 70 - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
 
-    # ======================== PARTIE 2.2 ========================
-    # TODO : Ajoutez des plateformes jusqu'à ce que la partie supérieure
-    # de l'écran soit remplie.
-    #
-    # À chaque itération, vous devrez notamment déterminer une position
-    # horizontale valide, choisir un type avec choose_platform_type(...),
-    # ajouter la plateforme à PLATFORMS et calculer la hauteur de la suivante.
-    # Les probabilités à utiliser sont données dans le README.
-    green_probability = random.random()
-    blue_probability = (1-green_probability)*random.random()
-    spring_probability = (1-green_probability-blue_probability)*random.random()
-    print(green_probability,blue_probability,spring_probability, green_probability + blue_probability + spring_probability,sep="\n")
-    color = choose_platform_type(g,1,1)
-    while current_y < SCREEN_HEIGHT:
-        new_platform = create_platform(random.randint(0, SCREEN_WIDTH), current_y+random.randint(MIN_PLATFORM_GAP,MAX_PLATFORM_GAP),platform_type=color)
-        pass
+    while current_y > 0:
+        green_probability = 0.65
+        blue_probability = 0.17
+        spring_probability = 0.1
+        color = choose_platform_type(green_probability, blue_probability=blue_probability, spring_probability=spring_probability)
+        new_platform = create_platform(random.randint(0, SCREEN_WIDTH-PLATFORM_WIDTH), current_y,platform_type=color)
+        current_y -= random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+        PLATFORMS.append(new_platform)
     return
     # ===========================================================
 
@@ -103,6 +95,3 @@ def show_game_over_message():
     GAME_WINDOW.blit(hint_text, hint_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 95)))
 
     pygame.display.update()
-
-if __name__ == "__main__":
-    generate_initial_platforms()
