@@ -94,9 +94,12 @@ def move_platforms():
         if plat["type"] == "blue" and plat["active"]:
             plat["x"] += plat["vx"]
 
-            #Ici, on inverse le mouvement si la plateforme touche le bord gauche ou droit
-            if plat["x"] <= 0 or (plat["x"] + plat["width"]) >= SCREEN_WIDTH:
-                plat["vx"] = -plat["vx"]
+            if plat["x"] < 0:
+                plat["x"] = 0
+                plat["vx"] = abs(plat["vx"])
+            elif plat["x"] + plat["width"] > SCREEN_WIDTH:
+                plat["x"] = SCREEN_WIDTH - plat["width"]
+                plat["vx"] = -abs(plat["vx"])
 
     return
 
@@ -189,9 +192,8 @@ def scroll_camera():
             plat["y"] += scroll_dist
 
         #Mise à jour des scrores
-        doodle_dict["score"] += int(scroll_dist)
-        if doodle_dict["score"] > doodle_dict["score"]:
-            doodle_dict["high_score"] = doodle_dict["score"]
+        doodle_dict["score"] += scroll_dist
+        doodle_dict["high_score"] = max(doodle_dict["high_score"], doodle_dict["score"])
 
         #Filtrage en place de la liste globale pour éliminer les plateformes hors-écran
         PLATFORMS[:] = [plat for plat in PLATFORMS if plat["y"] < SCREEN_HEIGHT]
@@ -217,15 +219,10 @@ def generate_new_platforms():
     # Vous devrez partir de la plateforme actuellement la plus haute et
     # continuer à ajouter des plateformes tant que nécessaire. Utilisez
     # choose_platform_type(...) avec les probabilités indiquées dans le README.
-    if not PLATFORMS:
-        return
-
-    #On veut trouver la plateforme la plus haute existante (Y le plus bas)
-    current_y = float(PLATFORMS[0]["y"])
-
-    for plat in PLATFORMS:
-        if float(plat["y"]) < current_y:
-            current_y = float(plat["y"])
+    if PLATFORMS:
+        current_y = min(float(plat["y"]) for plat in PLATFORMS)
+    else:
+        current_y = float(SCREEN_HEIGHT)
 
 
     #Ajouter de nouvelles plateformes lorsque le perso dépasse le haut de l'écran
@@ -236,10 +233,10 @@ def generate_new_platforms():
 
         #Determination de la coordonnee X pour rester entièrement visible
         max_x = SCREEN_WIDTH - PLATFORM_WIDTH
-        x = random.randint(0,max_x)
+        x = random.randint(0, max_x)
 
         #Sélection aléatoire du type de plateform
-        p_type = choose_platform_type(0.55,0.20,0.13)
+        p_type = choose_platform_type(0.55, 0.20, 0.13)
 
         #Instanciation et insertion
         new_platform = create_platform(x, current_y, p_type)
