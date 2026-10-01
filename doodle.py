@@ -13,6 +13,7 @@ doodle_right_img = pygame.transform.scale(doodle_right_img, DOODLE_SIZE)
 
 # ======================== PARTIE 1.1 ========================
 doodle_dict.update({
+    #connecte au config.py
     "x": DOODLE_START_X,
     "y": DOODLE_START_Y,
     "vel_y": 0.0,

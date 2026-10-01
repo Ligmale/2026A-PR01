@@ -92,12 +92,12 @@ def move_platforms():
     # leur vitesse lorsqu'elles atteignent un bord.
     for plat in PLATFORMS:
         if plat["type"] == "blue" and plat["active"]:
-            plat["x"] += plat["vx"]
+            plat["x"] += plat["vx"] #C'est déja moving speed dans config
 
-            if plat["x"] < 0:
+            if plat["x"] < 0:#si dépasse a gauche on flip la vitesse avec plat["x"] = 0
                 plat["x"] = 0
                 plat["vx"] = abs(plat["vx"])
-            elif plat["x"] + plat["width"] > SCREEN_WIDTH:
+            elif plat["x"] + plat["width"] > SCREEN_WIDTH: # si dépasse à droite flip avec - plat[width] (l'image est dessinée a partir de la gauche)
                 plat["x"] = SCREEN_WIDTH - plat["width"]
                 plat["vx"] = -abs(plat["vx"])
 
@@ -142,9 +142,9 @@ def check_platform_collisions():
 
         plat_rect = (plat["x"], plat["y"], plat["width"], plat["height"])
 
-        #Tester pour tous les collisions
+        #Tester pour toutes les collisions
         if rects_collide(doodle_rect, plat_rect):
-            #Position des pieds selon l'image précédente
+            #Position des pieds selon l'image (tick) précédente
             previous_feet_y = doodle_feet_y - doodle_dict["vel_y"]
 
             #Vérifions où il atterrit sachant que les pieds doivent être au-dessus du sommet de la plateforme
@@ -182,6 +182,7 @@ def scroll_camera():
     # l'écran doivent être retirées, puis de nouvelles plateformes générées.
     if doodle_dict["y"] < CAMERA_SCROLL_THRESHOLD:
         #Le perso a franchie le seuil à la verticale (distance)
+        #le scroll dist est la différence entre le seuil et la position actuelle du doodle
         scroll_dist = CAMERA_SCROLL_THRESHOLD - doodle_dict["y"]
 
         #Bloquer visuellement à la hauteur du seuil
@@ -196,6 +197,7 @@ def scroll_camera():
         doodle_dict["high_score"] = max(doodle_dict["high_score"], doodle_dict["score"])
 
         #Filtrage en place de la liste globale pour éliminer les plateformes hors-écran
+        #recopie en compréhension de liste des plateformes visibles dans PLATFORMS pour réécrire PLATFORMS
         PLATFORMS[:] = [plat for plat in PLATFORMS if plat["y"] < SCREEN_HEIGHT]
 
         generate_new_platforms()
@@ -278,6 +280,8 @@ def restart_game():
 def rects_collide(r1, r2):
     """
     Vérifie si deux rectangles (x, y, largeur, hauteur) se chevauchent.
+    Les conditions détectent une séparation horizontale ou verticale ;
+    not renvoie True uniquement si les rectangles se chevauchent.
     Cette fonction est fournie et ne doit pas être modifiée.
     """
     return not (

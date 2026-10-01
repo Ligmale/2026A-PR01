@@ -33,17 +33,21 @@ def generate_initial_platforms():
         DOODLE_START_Y + 70,
         "green"
     )
+    """Ajoute une plateforme de départ sûre directement sous le Doodle."""
     PLATFORMS.append(start_platform)
-
+    #current_y : rajoute un nombre entre mingap et maxgap - 70 pour nous aider
     current_y = DOODLE_START_Y + 70 - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
-
+    # pygame height est a lenvers (0 en haut et screen_height en bas)
+    # boucle while tant que les plateformes remplisse pas l'écran
     while current_y > 0:
         green_probability = 0.65
         blue_probability = 0.17
         spring_probability = 0.1
-        color = choose_platform_type(green_probability, blue_probability=blue_probability, spring_probability=spring_probability)
+        #hardcoded probabilités si jamais on veut jouer avec on peut le mettre dans la config
+        color = choose_platform_type(green_probability=green_probability, blue_probability=blue_probability, spring_probability=spring_probability)
         new_platform = create_platform(random.randint(0, SCREEN_WIDTH-PLATFORM_WIDTH), current_y,platform_type=color)
         current_y -= random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+        #incrémente vers le haut (voir plus haut)
         PLATFORMS.append(new_platform)
     return
     # ===========================================================
